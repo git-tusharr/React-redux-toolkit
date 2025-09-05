@@ -1,5 +1,5 @@
 import { useSelector,useDispatch } from "react-redux";
-import { addTask } from "./todoSlice";
+import { addTask,taskDelete,taskComplete,taskInComplete } from "./todoSlice";
 import { useState } from "react";
 
 const App =()=>{
@@ -16,13 +16,32 @@ const App =()=>{
             <>
             <tr>
                 <td>{sno}</td>
-                <td>{key.work}</td>
+
+                <td>
+                    {key.status ?(<>
+                    <span style={{color:"red", textDecoration:"line-through"}}>{key.work}</span>
+                    </>):(<>
+                    {key.work}
+                    </>)}
+                </td>
+
+                <td>
+                    <button onClick={()=>{dispatch(taskDelete({id:key.id}))}}>Delete</button>
+                </td>
+
+                <td>
+                    <button onClick={()=>{dispatch(taskComplete({id:key.id}))}}>Complete</button>
+                </td>
+
+                <td>
+                    <button onClick={()=>{dispatch(taskInComplete({id:key.id}))}}>Incomplete</button>
+                </td>
+
             </tr>
             </>
         )
     })
 
-    console.log(myTask);
 
     return(
         <>
@@ -32,7 +51,7 @@ const App =()=>{
         <br />
 
             Enter Your task : <input type="text" value={textVal} onChange={(e)=>{setTxtVal(e.target.value)}} />  
-            <button onClick={()=>{dispatch(addTask({id:Date.now(),work:textVal}))}}>Add</button>   
+            <button onClick={()=>{dispatch(addTask({id:Date.now(),work:textVal,status:false}))}}>Add</button>   
         <br />
         <br />
         <hr />
@@ -41,6 +60,9 @@ const App =()=>{
             <tr>
                 <th>Sno</th>
                 <th>Your Task</th>
+                <th></th>
+                <th></th>
+                <th></th>
             </tr>
             {ans}
         </table>
